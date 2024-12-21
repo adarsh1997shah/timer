@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 interface TimerProgressProps {
   progress: number;
@@ -7,7 +7,7 @@ interface TimerProgressProps {
 export const TimerProgress: React.FC<TimerProgressProps> = ({ progress }) => (
   <div className="w-full bg-gray-200 rounded-full h-2 mb-4">
     <div
-      className="h-full rounded-full bg-blue-600 transition-all duration-1000"
+      className="h-full rounded-full bg-blue-600"
       style={{ width: `${progress}%` }}
     />
   </div>

@@ -8,6 +8,7 @@ import { validateTimerForm } from "../utils/validation";
 import { Timer } from "../types/timer";
 
 import Button from "../common/components/button/Button";
+import IconButton from "../common/components/button/IconButton";
 
 interface AddEditTimerModalProps {
   isOpen: boolean;
@@ -68,8 +69,7 @@ export const AddEditTimerModal: React.FC<AddEditTimerModalProps> = ({ isOpen, on
         title: title.trim(),
         description: description.trim(),
         duration: totalSeconds,
-        remainingTime: totalSeconds,
-        isRunning: false
+        remainingTime: totalSeconds
       });
     }
 
@@ -102,12 +102,8 @@ export const AddEditTimerModal: React.FC<AddEditTimerModalProps> = ({ isOpen, on
             <Clock className="w-5 h-5 text-blue-600" />
             <h2 className="text-xl font-semibold">{timer ? "Edit timer" : "Add timer"}</h2>
           </div>
-          <button
-            onClick={handleClose}
-            className="p-1 hover:bg-gray-100 rounded-full transition-colors"
-          >
-            <X className="w-5 h-5" />
-          </button>
+
+          <IconButton onClick={handleClose} Icon={<X className="w-5 h-5" />} title="Close timer modal" />
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">

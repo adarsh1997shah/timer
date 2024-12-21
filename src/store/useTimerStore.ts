@@ -1,7 +1,7 @@
-import { configureStore, createSlice, Middleware } from "@reduxjs/toolkit";
+import { Action, configureStore, createSlice, Middleware } from "@reduxjs/toolkit";
 import { useDispatch, useSelector } from "react-redux";
 
-import { Timer, TimerAction } from "../types/timer";
+import { Timer } from "../types/timer";
 
 const initialState = {
   timers: [] as Timer[]
@@ -14,8 +14,10 @@ const timerSlice = createSlice({
     addTimer: (state, action) => {
       state.timers.push({
         ...action.payload,
+        isRunning: false,
         id: crypto.randomUUID(),
-        createdAt: Date.now()
+        createdAt: Date.now(),
+        elapsedTime: 0
       });
     },
     deleteTimer: (state, action) => {
@@ -23,26 +25,32 @@ const timerSlice = createSlice({
     },
     toggleTimer: (state, action) => {
       const timer = state.timers.find((timer) => timer.id === action.payload);
+
       if (timer) {
         timer.isRunning = !timer.isRunning;
       }
     },
     updateTimer: (state, action) => {
-      const timer = state.timers.find((timer) => timer.id === action.payload);
+      const timer = state.timers.find((timer) => timer.id === action.payload.id);
+
       if (timer && timer.isRunning) {
-        timer.remainingTime -= 1;
-        timer.isRunning = timer.remainingTime > 0;
+        timer.remainingTime = action.payload.remainingTime;
+        timer.elapsedTime = action.payload.elapsedTime;
+        timer.isRunning = timer.remainingTime >= 0;
       }
     },
     restartTimer: (state, action) => {
       const timer = state.timers.find((timer) => timer.id === action.payload);
+
       if (timer) {
         timer.remainingTime = timer.duration;
         timer.isRunning = false;
+        timer.elapsedTime = 0;
       }
     },
     editTimer: (state, action) => {
       const timer = state.timers.find((timer) => timer.id === action.payload.id);
+
       if (timer) {
         Object.assign(timer, action.payload.updates);
         timer.remainingTime = action.payload.updates.duration || timer.duration;
@@ -55,7 +63,7 @@ const timerSlice = createSlice({
 const timerMiddleWare: Middleware = (store) => (next) => (action: unknown) => {
   const result = next(action);
 
-  if ((action as TimerAction).type.startsWith("timer/")) {
+  if ((action as Action).type.startsWith("timer/")) {
     localStorage.setItem("timer-data", JSON.stringify(store.getState().timers));
   }
 
@@ -89,10 +97,12 @@ export const useTimerStore = () => {
 
   return {
     timers,
-    addTimer: (timer: Omit<Timer, "id" | "createdAt">) => dispatch(addTimer(timer)),
+    addTimer: (timer: Omit<Timer, "id" | "createdAt" | "isRunning" | "elapsedTime">) =>
+      dispatch(addTimer(timer)),
     deleteTimer: (id: string) => dispatch(deleteTimer(id)),
     toggleTimer: (id: string) => dispatch(toggleTimer(id)),
-    updateTimer: (id: string) => dispatch(updateTimer(id)),
+    updateTimer: (id: string, remainingTime: number, elapsedTime: number) =>
+      dispatch(updateTimer({ id, remainingTime, elapsedTime })),
     restartTimer: (id: string) => dispatch(restartTimer(id)),
     editTimer: (id: string, updates: Partial<Timer>) => dispatch(editTimer({ id, updates }))
   };
