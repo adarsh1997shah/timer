@@ -3,10 +3,11 @@ import { Plus, Clock } from "lucide-react";
 import { Toaster } from "sonner";
 
 import useMobile from "./common/hooks/useMobile";
-import Button from "./common/components/button/button";
+
+import Button from "./common/components/button/Button";
 
 import { TimerList } from "./components/TimerList";
-import { AddTimerModal } from "./components/AddTimerModal";
+import { AddEditTimerModal } from "./components/AddEditTimerModal";
 
 function Home() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -18,7 +19,7 @@ function Home() {
       <Toaster position={isMobile ? "bottom-right" : "top-right"} />
 
       <div className="container mx-auto px-4 py-8 min-h-screen">
-        <div className="flex justify-between">
+        <div className="flex justify-between mb-10">
           <div className="flex items-center gap-3">
             <Clock className="w-8 h-8 text-blue-600" />
 
@@ -36,7 +37,7 @@ function Home() {
 
         <TimerList />
 
-        <AddTimerModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+        <AddEditTimerModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
       </div>
     </div>
   );
