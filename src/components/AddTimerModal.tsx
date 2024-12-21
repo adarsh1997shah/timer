@@ -64,6 +64,11 @@ export const AddTimerModal: React.FC<AddTimerModalProps> = ({ isOpen, onClose })
       minutes: false,
       seconds: false,
     });
+    setTitle('');
+    setDescription('');
+    setHours(0);
+    setMinutes(0);
+    setSeconds(0);
   };
 
   const isTimeValid = hours > 0 || minutes > 0 || seconds > 0;
@@ -96,7 +101,7 @@ export const AddTimerModal: React.FC<AddTimerModalProps> = ({ isOpen, onClose })
               onChange={(e) => setTitle(e.target.value)}
               onBlur={() => setTouched({ ...touched, title: true })}
               maxLength={50}
-              className={` ${
+              className={`block w-full py-1.5 px-3 border-2 rounded-md focus:outline-0 ${
                 touched.title && !isTitleValid
                   ? 'border-red-500'
                   : 'border-gray-300'
@@ -121,7 +126,7 @@ export const AddTimerModal: React.FC<AddTimerModalProps> = ({ isOpen, onClose })
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               rows={3}
-              className=""
+              className="block w-full py-1.5 px-3 border-2 rounded-md focus:outline-0 border-gray-300"
               placeholder="Enter timer description (optional)"
             />
           </div>
@@ -138,9 +143,9 @@ export const AddTimerModal: React.FC<AddTimerModalProps> = ({ isOpen, onClose })
                   min="0"
                   max="23"
                   value={hours}
-                  onChange={(e) => setHours(Math.min(23, parseInt(e.target.value) || 0))}
+                  onChange={(e) => setHours(Math.min(23, Number(e.target.value)))}
                   onBlur={() => setTouched({ ...touched, hours: true })}
-                  className="[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none w-full px-3 py-2 "
+                  className="block w-full py-1.5 px-3 border-2 border-gray-300 rounded-md focus:outline-0 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                 />
               </div>
               <div>
@@ -150,9 +155,9 @@ export const AddTimerModal: React.FC<AddTimerModalProps> = ({ isOpen, onClose })
                   min="0"
                   max="59"
                   value={minutes}
-                  onChange={(e) => setMinutes(Math.min(59, parseInt(e.target.value) || 0))}
+                  onChange={(e) => setMinutes(Math.min(59, Number(e.target.value)))}
                   onBlur={() => setTouched({ ...touched, minutes: true })}
-                  className="[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none w-full px-3 py-2"
+                  className="block w-full py-1.5 px-3 border-2 border-gray-300 rounded-md focus:outline-0 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                 />
               </div>
               <div>
@@ -162,13 +167,13 @@ export const AddTimerModal: React.FC<AddTimerModalProps> = ({ isOpen, onClose })
                   min="0"
                   max="59"
                   value={seconds}
-                  onChange={(e) => setSeconds(Math.min(59, parseInt(e.target.value) || 0))}
+                  onChange={(e) => setSeconds(Math.min(59, Number(e.target.value)))}
                   onBlur={() => setTouched({ ...touched, seconds: true })}
-                  className="[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="block w-full py-1.5 px-3 border-2 border-gray-300 rounded-md focus:outline-0 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                 />
               </div>
             </div>
-            {touched.hours && touched.minutes && touched.seconds && !isTimeValid && (
+            {(touched.hours || touched.minutes || touched.seconds) && !isTimeValid && (
               <p className="mt-2 text-sm text-red-500">
                 Please set a duration greater than 0
               </p>

@@ -13,35 +13,41 @@ interface TimerItemProps {
   timer: Timer;
 }
 
+const timerAudio = TimerAudio.getInstance();
+
 export const TimerItem: React.FC<TimerItemProps> = ({ timer }) => {
-  const { toggleTimer, deleteTimer, updateTimer, restartTimer } = useTimerStore();
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+
   const intervalRef = useRef<number | null>(null);
-  const timerAudio = TimerAudio.getInstance();
   const hasEndedRef = useRef(false);
+
+  const { toggleTimer, deleteTimer, updateTimer, restartTimer } = useTimerStore();
 
   useEffect(() => {
     if (timer.isRunning) {
       intervalRef.current = window.setInterval(() => {
         updateTimer(timer.id);
-        
-        if (timer.remainingTime <= 1 && !hasEndedRef.current) {
-          hasEndedRef.current = true;
-          timerAudio.play().catch(console.error);
-          
-          toast.success(`Timer "${timer.title}" has ended!`, {
-            duration: 5000,
-            action: {
-              label: 'Dismiss',
-              onClick: timerAudio.stop,
-            },
-          });
-        }
       }, 1000);
     }
 
     return () => clearInterval(intervalRef.current!);
-  }, [timer.isRunning, timer.id, timer.remainingTime, timer.title, timerAudio, updateTimer]);
+  }, [timer.isRunning, timer.id]);
+
+  useEffect(() => {
+    if (timer.remainingTime < 1 && !hasEndedRef.current) {
+      hasEndedRef.current = true;
+      timerAudio.play().catch(console.error);
+      
+      toast.success(`Timer "${timer.title}" has ended!`, {
+        duration: 5000,
+        onAutoClose: timerAudio.stop.bind(timerAudio),
+        action: {
+          label: 'Dismiss',
+          onClick: timerAudio.stop.bind(timerAudio),
+        },
+      });
+    }
+  }, [timer.remainingTime, timer.title]);
 
   const handleRestart = () => {
     hasEndedRef.current = false;
@@ -117,7 +123,6 @@ export const TimerItem: React.FC<TimerItemProps> = ({ timer }) => {
             <TimerControls
               isRunning={timer.isRunning}
               remainingTime={timer.remainingTime}
-              duration={timer.duration}
               onToggle={handleToggle}
               onRestart={handleRestart}
             />
