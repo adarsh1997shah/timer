@@ -36,6 +36,7 @@ function Button({
         { [disableClass]: isDisabled },
         className
       )}
+      disabled={isDisabled}
     >
       {Icon}
       {children}

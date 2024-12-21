@@ -1,3 +1,5 @@
+import { Action } from "redux";
+
 export interface Timer {
   id: string;
   title: string;
@@ -6,4 +8,8 @@ export interface Timer {
   remainingTime: number;
   isRunning: boolean;
   createdAt: number;
+}
+
+export interface TimerAction extends Action<string> {
+  payload?: any;
 }
