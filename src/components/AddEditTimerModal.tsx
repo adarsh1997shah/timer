@@ -1,8 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { X, Clock } from "lucide-react";
+
 import { useTimerStore } from "../store/useTimerStore";
+
 import { validateTimerForm } from "../utils/validation";
+
 import { Timer } from "../types/timer";
+
+import Button from "../common/components/button/Button";
 
 interface AddEditTimerModalProps {
   isOpen: boolean;
@@ -182,30 +187,23 @@ export const AddEditTimerModal: React.FC<AddEditTimerModalProps> = ({ isOpen, on
                 />
               </div>
             </div>
-            {touched.hours && touched.minutes && touched.seconds && !isTimeValid && (
+            {(touched.hours || touched.minutes || touched.seconds) && !isTimeValid && (
               <p className="mt-2 text-sm text-red-500">Please set a duration greater than 0</p>
             )}
           </div>
 
           <div className="flex justify-end gap-3 pt-4 border-t">
-            <button
-              type="button"
-              onClick={handleClose}
-              className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200 transition-colors"
-            >
+            <Button className="text-sm font-medium" onClick={handleClose} variant="secondary">
               Cancel
-            </button>
-            <button
+            </Button>
+
+            <Button
+              className="text-sm font-medium"
               type="submit"
-              className={`px-4 py-2 text-sm font-medium text-white rounded-md transition-colors ${
-                isTitleValid && isTimeValid
-                  ? "bg-blue-600 hover:bg-blue-700"
-                  : "bg-blue-400 cursor-not-allowed"
-              }`}
-              disabled={!isTitleValid || !isTimeValid}
+              isDisabled={!isTitleValid || !isTimeValid}
             >
               Save Changes
-            </button>
+            </Button>
           </div>
         </form>
       </div>

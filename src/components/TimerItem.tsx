@@ -2,6 +2,8 @@ import React, { useEffect, useRef, useState } from "react";
 import { Trash2, RotateCcw, Pencil } from "lucide-react";
 import { toast } from "sonner";
 
+import IconButton from "../common/components/button/IconButton";
+
 import { Timer } from "../types/timer";
 
 import { useTimerStore } from "../store/useTimerStore";
@@ -87,27 +89,26 @@ export const TimerItem: React.FC<TimerItemProps> = ({ timer }) => {
               <p className="text-gray-600 mt-1">{timer.description}</p>
             </div>
             <div className="flex gap-2">
-              <button
-                onClick={() => setIsEditModalOpen(true)}
-                className="p-2 rounded-full hover:bg-blue-50 text-blue-500 transition-colors"
+              <IconButton
                 title="Edit Timer"
-              >
-                <Pencil className="w-5 h-5" />
-              </button>
-              <button
-                onClick={handleRestart}
-                className="p-2 rounded-full hover:bg-blue-50 text-blue-500 transition-colors"
+                onClick={() => setIsEditModalOpen(true)}
+                variant="info"
+                Icon={<Pencil className="w-5 h-5" />}
+              />
+
+              <IconButton
                 title="Restart Timer"
-              >
-                <RotateCcw className="w-5 h-5" />
-              </button>
-              <button
-                onClick={handleDelete}
-                className="p-2 rounded-full hover:bg-red-50 text-red-500 transition-colors"
+                onClick={handleRestart}
+                variant="info"
+                Icon={<RotateCcw className="w-5 h-5" />}
+              />
+
+              <IconButton
                 title="Delete Timer"
-              >
-                <Trash2 className="w-5 h-5" />
-              </button>
+                onClick={handleDelete}
+                variant="danger"
+                Icon={<Trash2 className="w-5 h-5" />}
+              />
             </div>
           </div>
           <div className="flex flex-col items-center mt-6">
