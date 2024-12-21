@@ -73,7 +73,7 @@ export const AddEditTimerModal: React.FC<AddEditTimerModalProps> = ({ isOpen, on
       });
     }
 
-    onClose();
+    handleClose();
   };
 
   const handleClose = () => {
@@ -100,7 +100,7 @@ export const AddEditTimerModal: React.FC<AddEditTimerModalProps> = ({ isOpen, on
         <div className="flex justify-between items-center mb-6">
           <div className="flex items-center gap-2">
             <Clock className="w-5 h-5 text-blue-600" />
-            <h2 className="text-xl font-semibold">Edit Timer</h2>
+            <h2 className="text-xl font-semibold">{timer ? "Edit timer" : "Add timer"}</h2>
           </div>
           <button
             onClick={handleClose}
