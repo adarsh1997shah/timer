@@ -1,14 +1,10 @@
-import { MouseEvent, ReactNode } from "react";
+import { ButtonHTMLAttributes, ReactNode } from "react";
 import classNames from "classnames";
 
-interface ButtonProps {
-  onClick?: (event: MouseEvent<HTMLButtonElement>) => void;
+interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   Icon?: ReactNode;
   variant?: "info" | "danger" | "success" | "";
-  className?: string;
-  type?: "button" | "submit";
   isDisabled?: boolean;
-  title?: string;
   withBackground?: boolean;
 }
 
