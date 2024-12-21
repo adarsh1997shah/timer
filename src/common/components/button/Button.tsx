@@ -1,11 +1,12 @@
+import { MouseEvent, ReactNode } from "react";
 import classNames from "classnames";
 
 interface ButtonProps {
-  onClick: any;
-  Icon: any;
-  variant?: any;
-  className: any;
-  children: any;
+  onClick: (event: MouseEvent<HTMLButtonElement>) => void;
+  Icon?: ReactNode;
+  variant?: "primary" | "secondary";
+  className?: string;
+  children: ReactNode;
 }
 
 function Button({ onClick, Icon, variant = "primary", className, children }: ButtonProps) {
