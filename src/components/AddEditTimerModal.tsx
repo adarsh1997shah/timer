@@ -197,11 +197,7 @@ export const AddEditTimerModal: React.FC<AddEditTimerModalProps> = ({ isOpen, on
               Cancel
             </Button>
 
-            <Button
-              className="text-sm font-medium"
-              type="submit"
-              isDisabled={!isTitleValid || !isTimeValid}
-            >
+            <Button className="text-sm font-medium" type="submit">
               Save Changes
             </Button>
           </div>

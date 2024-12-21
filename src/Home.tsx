@@ -16,7 +16,7 @@ function Home() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
-      <Toaster position={isMobile ? "bottom-right" : "top-right"} />
+      <Toaster richColors position={isMobile ? "bottom-right" : "top-right"} />
 
       <div className="container mx-auto px-4 py-8 min-h-screen">
         <div className="flex justify-between mb-10">
