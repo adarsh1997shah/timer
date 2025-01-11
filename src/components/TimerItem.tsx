@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Trash2, RotateCcw, Pencil } from "lucide-react";
 import { toast } from "sonner";
+import classNames from "classnames";
 
 import IconButton from "../common/components/button/IconButton";
 
@@ -27,6 +28,9 @@ export const TimerItem: React.FC<TimerItemProps> = ({ timer }) => {
   const reqAnimationRef = useRef<number | null>(null);
 
   const { toggleTimer, deleteTimer, updateTimer, restartTimer } = useTimerStore();
+
+  const { text, remainingSeconds } = formatTime(Math.ceil(timer.remainingTime));
+  const isLastThreeSec = remainingSeconds <= 3;
 
   useEffect(() => {
     const startTime = Date.now() - timer.elapsedTime * 1000;
@@ -115,8 +119,13 @@ export const TimerItem: React.FC<TimerItemProps> = ({ timer }) => {
           </div>
         </div>
         <div className="flex flex-col items-center mt-6">
-          <div className="text-4xl font-mono font-bold text-gray-800 mb-4">
-            {formatTime(Math.ceil(timer.remainingTime))}
+          <div
+            className={classNames("text-4xl relative font-mono font-bold text-gray-800 mb-4", {
+              // "animate-bounce": isLastThreeSec,
+              "text-red-600": isLastThreeSec
+            })}
+          >
+            {text}
           </div>
 
           <TimerProgress progress={(timer.remainingTime / timer.duration) * 100} />
